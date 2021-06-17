@@ -20,7 +20,7 @@
             name="username"
             type="text"
             ref="userNameRef"
-            v-model="loginForm.username"
+            v-model.trim="loginForm.username"
             tabindex="1"
             autocomplete="on"
             placeholder="请输入用户名！"
@@ -38,7 +38,7 @@
               class="password"
               ref="passwordRef"
               :type="passwordType"
-              v-model="loginForm.password"
+              v-model.trim="loginForm.password"
               placeholder="请输入登录密码！"
               prefix-icon="el-icon-lock"
               name="password"
@@ -50,9 +50,9 @@
             ></el-input>
           </el-form-item>
         </el-tooltip>
-        <el-form-item prop="isChecked" class="agreement">
-          <el-checkbox v-model="isChecked"> </el-checkbox
-          ><span
+        <el-form-item prop="isChecked">
+          <input type="checkbox" v-model="loginForm.isChecked" />
+          <span
             >&nbsp;我已阅读并同意<el-link
               type="primary"
               :underline="false"
@@ -69,39 +69,24 @@
           >
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width: 100%">登录</el-button>
+          <el-button
+            :loading="loading"
+            @click="handleLogin"
+            type="primary"
+            style="width: 100%"
+            >登录</el-button
+          >
         </el-form-item>
         <div class="tips">
-          <span>默认用户名 ：admin1</span>
-          <span>默认密码 ： root</span><br />
-          <span>默认用户名 ：admin2</span>
-          <span>默认密码 ： root</span>
+          <span>默认用户名 ： admin</span>
+          <span>默认密码 ： 长度大于6</span><br />
+          <span>默认用户名 ： editor</span>
+          <span>默认密码 ： 长度大于6</span>
         </div>
       </el-form>
       <el-divider content-position="left">第三方登录</el-divider>
       <div class="footer-box">
-        <div class="signup-container">
-          <span class="qq-svg-container">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-QQ" />
-            </svg>
-          </span>
-          <span class="wx-svg-container">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-wechat" />
-            </svg>
-          </span>
-          <span class="al-svg-container">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-icon_alipay" />
-            </svg>
-          </span>
-          <span class="weibo-svg-container">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-weibo" />
-            </svg>
-          </span>
-        </div>
+        <ThirdPartyLogin />
       </div>
     </div>
     <div class="right">
@@ -111,24 +96,60 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, reactive, toRefs, nextTick } from "vue";
-
+import { useRoute, LocationQuery, useRouter } from "vue-router";
+import ThirdPartyLogin from "./components/ThirdPartyLogin.vue";
+import { isValidUsername } from "@/utils/validate";
 export default defineComponent({
   name: "login",
+  components: {
+    ThirdPartyLogin,
+  },
   setup() {
+    const router = useRouter();
     const loginFormRef = ref(null);
     const userNameRef = ref(null);
     const passwordRef = ref(null);
-    const isChecked = ref(false);
+    const validateUsername = (rule: any, value: string, callback: Function) => {
+      if (!isValidUsername(value)) {
+        callback(new Error("Please enter the correct user name"));
+      } else {
+        callback();
+      }
+    };
+    const validatePassword = (rule: any, value: string, callback: Function) => {
+      if (value.length < 6) {
+        callback(new Error("The password can not be less than 6 digits"));
+      } else {
+        callback();
+      }
+    };
     const state = reactive({
       loginForm: {
         username: "",
         password: "",
+        isChecked: false,
       },
       loginRules: {
-        username: [{ validator: userNameRef, trigger: "blur" }],
-        password: [{ validator: passwordRef, trigger: "blur" }],
+        username: [{ validator: validateUsername, trigger: "blur" }],
+        password: [
+          {
+            validator: validatePassword,
+            trigger: "blur",
+          },
+        ],
+        isChecked: [
+          {
+            validator: (rule: any, value: boolean, callback: Function) => {
+              if (value) {
+                callback();
+              } else {
+                callback(new Error("Please check the relevant protocol"));
+              }
+            },
+            trigger: "change",
+          },
+        ],
       },
-      isChecked: false,
       passwordType: "password",
       loading: false,
       showDialog: false,
@@ -141,7 +162,19 @@ export default defineComponent({
         if (e.key === "CapsLock") state.capsTooltip = !state.capsTooltip;
       },
       handleLogin: () => {
-        console.log(213);
+        (loginFormRef.value as any).validate(async (valid: boolean) => {
+          if (valid) {
+            state.loading = true;
+            localStorage.setItem("user",state.loginForm.username)
+            router
+              .push({
+                path: "/layout",
+              })
+              .catch((err) => {
+                console.warn(err);
+              });
+          }
+        });
       },
       showPwd: () => {
         if (state.passwordType === "password") {
@@ -165,7 +198,7 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="scss"  scoped>
+<style lang="scss" scoped>
 .login-container {
   height: 100%;
   min-width: 1200px;
@@ -173,50 +206,48 @@ export default defineComponent({
   align-items: center;
   justify-content: space-around;
   background: linear-gradient(225deg, #1493fa, #01c6fa);
+
   .left {
     width: 478px;
     height: 550px;
     background-color: #fff;
     padding: 48px;
+
     .title-box {
       display: flex;
       align-items: center;
+
       img {
         width: 64px;
         height: 64px;
         margin-right: 16px;
       }
+
       .title {
         font-size: 24px;
         margin-right: 14px;
       }
+
       .line {
         width: 1px;
         background-color: #c7c7c7;
         height: 27px;
         margin-right: 12px;
       }
+
       .sub-title {
         font-size: 22px;
       }
     }
+
     .login-form {
       margin-top: 40px;
-      .password::after {
-        content: "";
-        font-family: element-icons !important;
-        position: absolute;
-        right: 10px;
-        font-size: 16px;
-        color: #ccc;
-        cursor: pointer;
-        user-select: none;
-      }
 
       .tips {
         font-size: 14px;
         color: #1493fa;
         margin-bottom: 10px;
+
         span {
           &:nth-of-type(odd) {
             margin-right: 16px;
@@ -224,20 +255,12 @@ export default defineComponent({
         }
       }
     }
-    .footer-box {
-      .signup-container {
-        display: flex;
-        svg.icon {
-          margin-right: 25px;
-          width: 40px;
-          height: 40px;
-        }
-      }
-    }
   }
+
   .right {
     display: flex;
     align-items: center;
+
     img {
       width: 633px;
       height: 435px;
