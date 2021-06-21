@@ -13,8 +13,7 @@
         :model="loginForm"
         :rules="loginRules"
         autocomplete="on"
-        label-position="left"
-      >
+        label-position="left">
         <el-form-item prop="username">
           <el-input
             name="username"

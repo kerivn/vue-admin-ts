@@ -1,11 +1,4 @@
-/*
- * @Author: kervin
- * @Date: 2021-06-04 15:18:25
- * @LastEditTime: 2021-06-04 15:40:49
- * @LastEditors: Please set LastEditors
- * @Description: 入口ts文件
- * @FilePath: \vue-admin-ts\src\main.ts
- */
+
 import Vue, { createApp } from "vue";
 import App from "./App.vue";
 import "@/styles/index.scss";
