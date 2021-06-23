@@ -175,16 +175,6 @@ export default defineComponent({
           }
         });
       },
-      showPwd: () => {
-        if (state.passwordType === "password") {
-          state.passwordType = "";
-        } else {
-          state.passwordType = "password";
-        }
-        nextTick(() => {
-          (passwordRef.value as any).focus();
-        });
-      },
     });
 
     return {
