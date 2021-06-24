@@ -1,3 +1,5 @@
+
+// 储存相关键名声明F
 class Keys {
   static sidebarStatusKey = "vue3-typescript-admin-sidebarStatusKey";
   static languageKey = "vue3-typescript-admin-languageKey";
