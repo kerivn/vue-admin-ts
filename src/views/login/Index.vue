@@ -98,12 +98,15 @@ import { defineComponent, ref, reactive, toRefs, nextTick } from "vue";
 import { useRoute, LocationQuery, useRouter } from "vue-router";
 import ThirdPartyLogin from "./components/ThirdPartyLogin.vue";
 import { isValidUsername } from "@/utils/validate";
+import { useStore } from '@/store'
+import { UserActionTypes } from '@/store/modules/user/user-types'
 export default defineComponent({
   name: "login",
   components: {
     ThirdPartyLogin,
   },
   setup() {
+    const store = useStore()
     const router = useRouter();
     const loginFormRef = ref(null);
     const userNameRef = ref(null);
@@ -163,10 +166,9 @@ export default defineComponent({
       handleLogin: () => {
         (loginFormRef.value as any).validate(async (valid: boolean) => {
           if (valid) {
+            await store.dispatch(UserActionTypes.ACTION_LOGIN, state.loginForm)
             state.loading = true;
-            localStorage.setItem("user",state.loginForm.username)
-            router
-              .push({
+            router.push({
                 path: "/layout",
               })
               .catch((err) => {

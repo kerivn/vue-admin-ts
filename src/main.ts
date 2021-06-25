@@ -1,9 +1,8 @@
-
-import Vue, { createApp } from "vue";
+import Vue, {createApp} from "vue";
 import App from "./App.vue";
 import "@/styles/index.scss";
 import router from "./router";
-import{store}  from "./store";
+import {store} from "./store";
 import ElementPlus from "element-plus";
 import "element-plus/lib/theme-chalk/index.css";
 // import '@/styles/index.scss'
@@ -15,4 +14,6 @@ if (process.env.NODE_ENV === "development") {
     win.__VUE_DEVTOOLS_GLOBAL_HOOK__.Vue = app;
   }
 } */
+
 app.use(store).use(router).use(ElementPlus).mount("#app");
+

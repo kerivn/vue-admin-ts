@@ -6,3 +6,18 @@
  * @LastEditTime: 2021-06-24 17:13:18
  * @LastEditors: kervin
  */
+import service from '../utils/request'
+
+interface IUser {
+    username: string,
+    password: string
+}
+
+export const loginReq = (data: IUser) => {
+    return service({
+        url: "user/login",
+        method: "post",
+        data
+    })
+
+}

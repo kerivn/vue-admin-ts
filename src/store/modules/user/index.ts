@@ -7,6 +7,7 @@ import { MutationTree,ActionTree,Module} from 'vuex'
 import { UserState,UserMutationTypes,Mutations,Actions,UserActionTypes,AugmentedActionContext} from "./user-types";
 import { getToken, removeToken, setToken  } from "@/utils/cookies";
 import {RootState} from '@/store/root-types'
+import {loginReq} from "@/api/user";
 /* state */
 const state: UserState = {
   token: getToken() || "",
@@ -51,9 +52,12 @@ const actions:ActionTree<UserState,RootState>&Actions={
 async [UserActionTypes.ACTION_LOGIN]({commit}:AugmentedActionContext,
   userInfo:{username:string,password:string}
   ){
-
-console.log("这里写登录逻辑");
-
+const  {data}=await loginReq(userInfo)
+    console.log(data)
+  if(data){
+    setToken(data.accessToken)
+  }
+  commit(UserMutationTypes.SET_TOKEN, data.accessToken)
 
   },
 
@@ -68,20 +72,20 @@ console.log("这里写登录逻辑");
   async [UserActionTypes.ACTION_GET_USER_INFO](
     { commit }: AugmentedActionContext
   ) {
-   
+
   },
 
   async [UserActionTypes.ACTION_CHANGE_ROLES](
     { commit }: AugmentedActionContext,
     role: string
   ) {
-    
+
   },
 // 登出
   [UserActionTypes.ACTION_LOGIN_OUT](
     { commit }: AugmentedActionContext
   ) {
-   
+
   }
 }
 
