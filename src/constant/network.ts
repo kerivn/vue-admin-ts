@@ -6,8 +6,8 @@
  * @LastEditTime: 2021-06-24 16:57:24
  * @LastEditors: kervin
  */
-export enum InfoShowType{
-    LOG,
-    NOTIFICATION,
-    TOAST
+export enum InfoShowType {
+  LOG,
+  NOTIFICATION,
+  TOAST,
 }

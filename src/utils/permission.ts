@@ -6,5 +6,5 @@
  * @LastEditTime: 2021-06-22 15:19:35
  * @LastEditors: kervin
  */
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";

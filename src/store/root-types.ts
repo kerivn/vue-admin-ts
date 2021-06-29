@@ -6,8 +6,8 @@
  * @LastEditTime: 2021-06-24 16:46:50
  * @LastEditors: kervin
  */
-import {UserState,UserStore} from './modules/user/user-types'
+import { UserState, UserStore } from "./modules/user/user-types";
 export interface RootState {
-    user:UserState
-  }
-export type Store = UserStore<Pick<RootState, 'user'>>
+  user: UserState;
+}
+export type Store = UserStore<Pick<RootState, "user">>;

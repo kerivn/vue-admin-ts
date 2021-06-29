@@ -3,7 +3,7 @@ export const localStorage = {
   // 获取
   getItem(key: string): string | null {
     try {
-      let value = window.localStorage.getItem(key);
+      const value = window.localStorage.getItem(key);
       if (!value || value === "") {
         return null;
       }
@@ -34,7 +34,7 @@ export const sessionStorage = {
   // 获取
   getItem(key: string): string | null {
     try {
-      let value = window.sessionStorage.getItem(key);
+      const value = window.sessionStorage.getItem(key);
       if (value === null || value === undefined || value === "") {
         return null;
       }
@@ -69,7 +69,7 @@ export const timeStorage = {
       if (!window.localStorage) {
         return null;
       }
-      let data = JSON.parse(window.localStorage.getItem(key) as string);
+      const data = JSON.parse(window.localStorage.getItem(key) as string);
       // 判断设定的缓存已经过期
       const nowTime = new Date().getTime() - data.endTime;
       // 过期了，则删除

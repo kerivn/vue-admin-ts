@@ -1,14 +1,12 @@
 <template>
-    <div>navigationbar</div>
+  <div>navigationbar</div>
 </template>
 
 <script>
-    export default {
-        name: "index.vue"
-    }
+export default {
+  name: "index.vue",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
 s

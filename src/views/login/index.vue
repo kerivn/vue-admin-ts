@@ -13,7 +13,8 @@
         :model="loginForm"
         :rules="loginRules"
         autocomplete="on"
-        label-position="left">
+        label-position="left"
+      >
         <el-form-item prop="username">
           <el-input
             name="username"
@@ -98,15 +99,15 @@ import { defineComponent, ref, reactive, toRefs, nextTick } from "vue";
 import { useRoute, LocationQuery, useRouter } from "vue-router";
 import ThirdPartyLogin from "./components/ThirdPartyLogin.vue";
 import { isValidUsername } from "@/utils/validate";
-import { useStore } from '@/store'
-import { UserActionTypes } from '@/store/modules/user/user-types'
+import { useStore } from "@/store";
+import { UserActionTypes } from "@/store/modules/user/user-types";
 export default defineComponent({
   name: "login",
   components: {
     ThirdPartyLogin,
   },
   setup() {
-    const store = useStore()
+    const store = useStore();
     const router = useRouter();
     const loginFormRef = ref(null);
     const userNameRef = ref(null);
@@ -166,9 +167,10 @@ export default defineComponent({
       handleLogin: () => {
         (loginFormRef.value as any).validate(async (valid: boolean) => {
           if (valid) {
-            await store.dispatch(UserActionTypes.ACTION_LOGIN, state.loginForm)
+            await store.dispatch(UserActionTypes.ACTION_LOGIN, state.loginForm);
             state.loading = true;
-            router.push({
+            router
+              .push({
                 path: "/layout",
               })
               .catch((err) => {

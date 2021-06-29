@@ -6,13 +6,13 @@
  * @LastEditTime: 2021-06-24 17:12:32
  * @LastEditors: kervin
  */
-declare module '*.svg'
-declare module '*.png'
-declare module '*.jpg'
-declare module '*.jpeg'
-declare module '*.gif'
-declare module '*.bmp'
-declare module '*.tiff'
-declare module '*.yaml'
-declare module '*.json'
-declare module 'vue-count-to'
+declare module "*.svg";
+declare module "*.png";
+declare module "*.jpg";
+declare module "*.jpeg";
+declare module "*.gif";
+declare module "*.bmp";
+declare module "*.tiff";
+declare module "*.yaml";
+declare module "*.json";
+declare module "vue-count-to";
